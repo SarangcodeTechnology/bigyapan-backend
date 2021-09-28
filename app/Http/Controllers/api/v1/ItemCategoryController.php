@@ -4,7 +4,6 @@ namespace App\Http\Controllers\api\v1;
 
 use App\Helpers\CollectionHelper;
 use App\Http\Controllers\Controller;
-use App\Models\AccountType;
 use App\Models\ItemCategory;
 use Exception;
 use Illuminate\Http\Request;
@@ -81,7 +80,7 @@ class ItemCategoryController extends Controller
         $itemCategory = ItemCategory::all()->find($id);
         $itemCategory->update($data);
         $itemCategory = ItemCategory::all()->find($id);
-        return response()->json(['type' => 'success', 'message' => 'AccountType detail updated successfully.', 'errors' => null, 'data' => $itemCategory]);
+        return response()->json(['type' => 'success', 'message' => 'Item Category detail updated successfully.', 'errors' => null, 'data' => $itemCategory]);
     }
 
     /**
@@ -94,6 +93,6 @@ class ItemCategoryController extends Controller
     {
         $itemCategory = ItemCategory::all()->find($id);
         $itemCategory->delete($itemCategory);
-        return response()->json(['type' => 'success', 'message' => 'AccountType deleted successfully.', 'errors' => null, 'data' => null]);
+        return response()->json(['type' => 'success', 'message' => 'Item Category deleted successfully.', 'errors' => null, 'data' => null]);
     }
 }
