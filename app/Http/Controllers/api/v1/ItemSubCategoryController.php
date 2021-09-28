@@ -4,7 +4,6 @@ namespace App\Http\Controllers\api\v1;
 
 use App\Helpers\CollectionHelper;
 use App\Http\Controllers\Controller;
-use App\Models\AccountType;
 use App\Models\ItemSubCategory;
 use Exception;
 use Illuminate\Http\Request;
@@ -29,7 +28,7 @@ class ItemSubCategoryController extends Controller
             $itemSubCategories = ItemSubCategory::all();
             $itemSubCategories = CollectionHelper::paginate($itemSubCategories->sortBy($request['sortBy'], 0, $request['sortDesc'])->values(), $request['perPage']);
         }
-        return response()->json(['type' => 'success', 'message' => 'Item categories fetched successfully.', 'errors' => null, 'data' => $itemSubCategories]);
+        return response()->json(['type' => 'success', 'message' => 'Item sub categories fetched successfully.', 'errors' => null, 'data' => $itemSubCategories]);
     }
 
     /**
@@ -42,12 +41,13 @@ class ItemSubCategoryController extends Controller
     {
         try {
             $data = $request->validate([
+                'item_category_id' => 'required',
                 'title' => 'required|string',
             ]);
 
             $data = $request->all();
             $itemCategory = ItemSubCategory::create($data);
-            return response()->json(['type' => 'success', 'message' => 'Item category created successfully.', 'errors' => null, 'data' => null]);
+            return response()->json(['type' => 'success', 'message' => 'Item sub category created successfully.', 'errors' => null, 'data' => null]);
         } catch (Exception $e) {
             return response()->json(['type' => 'error', 'message' => $e->getMessage(), 'errors' => $e->getTrace(), 'data' => null], $e->getCode());
         }
@@ -63,7 +63,7 @@ class ItemSubCategoryController extends Controller
     {
         try {
             $itemSubCategories = ItemSubCategory::find($id);
-            return response()->json(['type' => 'success', 'message' => 'Item category detail fetched successfully.', 'errors' => null, 'data' => $itemSubCategories]);
+            return response()->json(['type' => 'success', 'message' => 'Item sub category detail fetched successfully.', 'errors' => null, 'data' => $itemSubCategories]);
         } catch (Exception $e) {
             return response()->json(['type' => 'error', 'message' => $e->getMessage(), 'errors' => $e->getTrace(), 'data' => null], $e->getCode());
         }
@@ -82,7 +82,7 @@ class ItemSubCategoryController extends Controller
         $itemCategory = ItemSubCategory::all()->find($id);
         $itemCategory->update($data);
         $itemCategory = ItemSubCategory::all()->find($id);
-        return response()->json(['type' => 'success', 'message' => 'AccountType detail updated successfully.', 'errors' => null, 'data' => $itemCategory]);
+        return response()->json(['type' => 'success', 'message' => 'Item sub category detail updated successfully.', 'errors' => null, 'data' => $itemCategory]);
     }
 
     /**
@@ -95,6 +95,6 @@ class ItemSubCategoryController extends Controller
     {
         $itemCategory = ItemSubCategory::all()->find($id);
         $itemCategory->delete($itemCategory);
-        return response()->json(['type' => 'success', 'message' => 'AccountType deleted successfully.', 'errors' => null, 'data' => null]);
+        return response()->json(['type' => 'success', 'message' => 'Item sub category deleted successfully.', 'errors' => null, 'data' => null]);
     }
 }
