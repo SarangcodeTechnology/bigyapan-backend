@@ -3,6 +3,7 @@
 use App\Http\Controllers\api\v1\AccountTypeController;
 use App\Http\Controllers\api\v1\AuthController;
 use App\Http\Controllers\api\v1\DeleteController;
+use App\Http\Controllers\api\v1\ItemCategoryController;
 use App\Http\Controllers\api\v1\ResourceController;
 use App\Http\Controllers\api\v1\UserController;
 use Illuminate\Http\Request;
@@ -39,6 +40,7 @@ Route::middleware('auth:api')->post('logout', [AuthController::class, 'logout'])
 //Users CRUD Routes
 Route::middleware('auth:api')->apiResource('users', UserController::class);
 Route::middleware('auth:api')->apiResource('account-types', AccountTypeController::class);
+Route::middleware('auth:api')->apiResource('item-categories', ItemCategoryController::class);
 
 //Laravel Passport Routes
 Route::middleware('auth:api')->get('oauth/authorize', [AuthorizationController::class, 'authorize']);
@@ -61,9 +63,6 @@ Route::middleware('auth:api')->post('oauth/token', [AccessTokenController::class
 Route::middleware('auth:api')->post('oauth/token/refresh', [TransientTokenController::class, 'refresh']);
 Route::middleware('auth:api')->get('oauth/tokens', [AuthorizedAccessTokenController::class, 'forUser']);
 Route::middleware('auth:api')->delete('oauth/tokens/{token_id}', [AuthorizedAccessTokenController::class, 'destroy']);
-
-//delete
-Route::middleware('auth:api')->post('delete', [DeleteController::class, 'delete']);
 
 //Sync Resources
 Route::middleware('auth:api')->get('sync-resources', [ResourceController::class, 'syncResources']);

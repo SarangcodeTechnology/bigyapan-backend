@@ -96,6 +96,5 @@ class AccountTypeController extends Controller
         $accountType = AccountType::all()->find($id);
         $accountType->delete($accountType);
         return response()->json(['type' => 'success', 'message' => 'AccountType deleted successfully.', 'errors' => null, 'data' => null]);
-
     }
 }

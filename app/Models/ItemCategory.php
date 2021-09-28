@@ -12,7 +12,7 @@ class ItemCategory extends Model
     protected $table = 'item_categories';
     protected $guarded = [];
 
-    public function provinces(){
+    public function item_sub_categories(){
         return $this->hasMany(ItemSubCategory::class,'item_category_id')->orderBy('title');
     }
 }
