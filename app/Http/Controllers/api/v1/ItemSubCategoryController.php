@@ -20,12 +20,12 @@ class ItemSubCategoryController extends Controller
 
         $keyword = $request['search'];
         if ($request['search']) {
-            $itemSubCategories = ItemSubCategory::all();
+            $itemSubCategories = ItemSubCategory::with('item_category')->get();
             $itemSubCategories = CollectionHelper::paginate($itemSubCategories->filter(function ($item) use ($keyword) {
                 return false !== stripos($item, $keyword);
             })->sortBy($request['sortBy'], 0, $request['sortDesc']), $request['perPage']);
         } else {
-            $itemSubCategories = ItemSubCategory::all();
+            $itemSubCategories = ItemSubCategory::with('item_category')->get();
             $itemSubCategories = CollectionHelper::paginate($itemSubCategories->sortBy($request['sortBy'], 0, $request['sortDesc'])->values(), $request['perPage']);
         }
         return response()->json(['type' => 'success', 'message' => 'Item sub categories fetched successfully.', 'errors' => null, 'data' => $itemSubCategories]);
@@ -62,7 +62,7 @@ class ItemSubCategoryController extends Controller
     public function show($id)
     {
         try {
-            $itemSubCategories = ItemSubCategory::find($id);
+            $itemSubCategories = ItemSubCategory::with('item_category')->find($id);
             return response()->json(['type' => 'success', 'message' => 'Item sub category detail fetched successfully.', 'errors' => null, 'data' => $itemSubCategories]);
         } catch (Exception $e) {
             return response()->json(['type' => 'error', 'message' => $e->getMessage(), 'errors' => $e->getTrace(), 'data' => null], $e->getCode());
