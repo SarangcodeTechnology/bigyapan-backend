@@ -4,6 +4,7 @@ use App\Http\Controllers\api\v1\AccountTypeController;
 use App\Http\Controllers\api\v1\AuthController;
 use App\Http\Controllers\api\v1\DeleteController;
 use App\Http\Controllers\api\v1\ItemCategoryController;
+use App\Http\Controllers\api\v1\ItemController;
 use App\Http\Controllers\api\v1\ItemSubCategoryController;
 use App\Http\Controllers\api\v1\ResourceController;
 use App\Http\Controllers\api\v1\UserController;
@@ -43,6 +44,7 @@ Route::middleware('auth:api')->apiResource('users', UserController::class);
 Route::middleware('auth:api')->apiResource('account-types', AccountTypeController::class);
 Route::middleware('auth:api')->apiResource('item-categories', ItemCategoryController::class);
 Route::middleware('auth:api')->apiResource('item-sub-categories', ItemSubCategoryController::class);
+Route::middleware('auth:api')->apiResource('items', ItemController::class);
 
 //Laravel Passport Routes
 Route::middleware('auth:api')->get('oauth/authorize', [AuthorizationController::class, 'authorize']);

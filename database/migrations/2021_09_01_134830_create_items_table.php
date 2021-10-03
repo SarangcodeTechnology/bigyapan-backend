@@ -21,17 +21,17 @@ class CreateItemsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('item_category_id');
-            $table->unsignedBigInteger('item_subcategory_id');
+            $table->unsignedBigInteger('item_sub_category_id');
             $table->string('item_name', 255);
             $table->unsignedInteger('item_price');
-            $table->boolean('item_price_negotiable');
-            $table->unsignedInteger('item_views');
-            $table->text('item_description');
+            $table->boolean('item_price_negotiable')->nullable();
+            $table->unsignedInteger('item_views')->nullable();
+            $table->text('item_description')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on(new Expression($db_main . '.users'))->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('item_category_id')->references('id')->on('item_categories')->onUpdate('cascade');
-            $table->foreign('item_subcategory_id')->references('id')->on('item_sub_categories')->onUpdate('cascade');
+            $table->foreign('item_sub_category_id')->references('id')->on('item_sub_categories')->onUpdate('cascade');
 
         });
     }
