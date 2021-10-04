@@ -11,7 +11,7 @@ class ItemController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -19,8 +19,8 @@ class ItemController extends Controller
         if ($request['search']) {
 
         } else {
-            $items = Item::with('user','item_category','item_sub_category')->get();
-            return $items;
+            $items = Item::with('user','item_category','item_sub_category')->paginate();
+            return response()->json(['type' => 'success', 'message' => 'Items fetched successfully.', 'errors' => null, 'data' => $items]);
         }
     }
 
@@ -42,18 +42,26 @@ class ItemController extends Controller
 
         $data = $request->all();
         $item = Item::create($data);
-        return response()->json(['type' => 'success', 'message' => 'Item created successfully', 'errors' => null, 'data' => null]);
+        return response()->json(['type' => 'success', 'message' => 'Item created successfully', 'errors' => null, 'data' => $item]);
     }
 
     /**
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
-        //
+        try{
+            $items= Item::with('item_sub_category', 'item_category')->find($id);
+            return response()->json(['type' => 'success', 'message' => 'Item fetched successfully.', 'errors' => null, 'data' => $items]);
+
+        }
+        catch(Exception $e)
+        {
+            return response()->json(['type'=>'error','message'=>$e->getMessage(),'errors'=> $e->getTrace(),'data'=>null],$e->getCode());
+        }
     }
 
     /**
@@ -61,21 +69,30 @@ class ItemController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
-        //
+      $data= $request->all();
+      $item= Item::all()->find($id);
+      $item->update($data);
+      $item= Item::all()->find($id);
+      return response()->json(['type' => 'success', 'message' => 'Item updated successfully.', 'errors' => null, 'data' => $item]);
+
+
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
-        //
+      $item=Item::all()->find($id);
+      $item->delete($item);
+      return response()->json(['type' => 'success', 'message' => 'Item deleted successfully.', 'errors' => null, 'data' => null]);
+
     }
 }

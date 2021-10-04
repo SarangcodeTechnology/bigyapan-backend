@@ -46,7 +46,7 @@ class ItemSubCategoryController extends Controller
             ]);
 
             $data = $request->all();
-            $itemCategory = ItemSubCategory::create($data);
+            $itemSubCategory = ItemSubCategory::create($data);
             return response()->json(['type' => 'success', 'message' => 'Item sub category created successfully.', 'errors' => null, 'data' => null]);
         } catch (Exception $e) {
             return response()->json(['type' => 'error', 'message' => $e->getMessage(), 'errors' => $e->getTrace(), 'data' => null], $e->getCode());
@@ -79,10 +79,10 @@ class ItemSubCategoryController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->all();
-        $itemCategory = ItemSubCategory::all()->find($id);
-        $itemCategory->update($data);
-        $itemCategory = ItemSubCategory::all()->find($id);
-        return response()->json(['type' => 'success', 'message' => 'Item sub category detail updated successfully.', 'errors' => null, 'data' => $itemCategory]);
+        $itemSubCategory = ItemSubCategory::all()->find($id);
+        $itemSubCategory->update($data);
+        $itemSubCategory = ItemSubCategory::all()->find($id);
+        return response()->json(['type' => 'success', 'message' => 'Item sub category detail updated successfully.', 'errors' => null, 'data' => $itemSubCategory]);
     }
 
     /**
@@ -93,8 +93,8 @@ class ItemSubCategoryController extends Controller
      */
     public function destroy($id)
     {
-        $itemCategory = ItemSubCategory::all()->find($id);
-        $itemCategory->delete($itemCategory);
+        $itemSubCategory = ItemSubCategory::all()->find($id);
+        $itemSubCategory->delete($itemSubCategory);
         return response()->json(['type' => 'success', 'message' => 'Item sub category deleted successfully.', 'errors' => null, 'data' => null]);
     }
 }
