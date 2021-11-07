@@ -42,9 +42,9 @@ Route::middleware('auth:api')->post('logout', [AuthController::class, 'logout'])
 //Users CRUD Routes
 Route::middleware('auth:api')->apiResource('users', UserController::class);
 Route::middleware('auth:api')->apiResource('account-types', AccountTypeController::class);
-Route::middleware('auth:api')->apiResource('item-categories', ItemCategoryController::class);
-Route::middleware('auth:api')->apiResource('item-sub-categories', ItemSubCategoryController::class);
-Route::middleware('auth:api')->apiResource('items', ItemController::class);
+Route::apiResource('item-categories', ItemCategoryController::class);
+Route::apiResource('item-sub-categories', ItemSubCategoryController::class);
+Route::apiResource('items', ItemController::class);
 
 //Laravel Passport Routes
 Route::middleware('auth:api')->get('oauth/authorize', [AuthorizationController::class, 'authorize']);
