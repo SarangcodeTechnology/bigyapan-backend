@@ -24,12 +24,12 @@ class AuthController extends Controller
             ], 401);
         }
         $accessToken = $request->user()->createToken('authToken')->accessToken;
-
+        $user = User::with('user_details')->where('id', Auth::id())->first();
         return response()->json([
             'type' => 'success',
             'message' => 'Login Successful',
             'data' => [
-                'user' => Auth::user(),
+                'user' => $user,
                 'accessToken' => $accessToken,
             ]
         ]);
@@ -83,11 +83,11 @@ class AuthController extends Controller
             return response()->json([
                 'type' => 'success',
                 'message' => 'User logout successful.'
-            ],200);
+            ], 200);
         };
         return response()->json([
             'type' => 'error',
             'message' => 'User logout not successful.'
-        ],402);
+        ], 402);
     }
 }

@@ -22,7 +22,7 @@ class ResourceController extends Controller
             return response()->json([
                 'type' => 'success',
                 'message' => 'Resources synced successfully',
-                'data' => compact('accountTypes','addresses','itemCategories','users')
+                'data' => compact('accountTypes', 'addresses', 'itemCategories', 'users')
             ], 200);
         } catch (Exception $e) {
             return response()->json([
@@ -30,5 +30,15 @@ class ResourceController extends Controller
                 'message' => $e->getMessage(),
             ], $e->getCode());
         }
+    }
+
+    public function getItemCategories(Request $request)
+    {
+        $itemCategories = ItemCategory::with('item_sub_categories')->get();
+        return response()->json([
+            'type' => 'success',
+            'message' => 'Item categories fetched successfully.',
+            'data' => compact('itemCategories')
+        ], 200);
     }
 }

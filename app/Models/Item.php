@@ -30,6 +30,6 @@ class Item extends Model
 
     public function item_images()
     {
-        return $this->hasMany(ItemImage::class, 'item_id');
+        return $this->hasOne(ItemImage::class, 'item_id');
     }
 }

@@ -44,18 +44,17 @@ class UserController extends Controller
     public function store(Request $request)
     {
         try {
-            $data = $request->validate([
-                'name' => 'required|string',
-                'email' => 'email|required|string|unique:users',
-                'password' => 'required|string|confirmed|min:8',
-                'user_details.phone_number' => 'required',
-                'user_details.account_type_id' => 'required',
-            ]);
-
-            $data = $request->all();
+//            $data = (json_decode($request->all(),true)->validate([
+//                'name' => 'required|string',
+//                'email' => 'email|required|string|unique:users',
+//                'password' => 'required|string|confirmed|min:8',
+//                'user_details.phone_number' => 'required',
+//                'user_details.account_type_id' => 'required',
+//            ]));
+            $data = json_decode($request['user'], true);
             $data['password'] = Hash::make($data['password']);
-            $titleShort = Hash::make($data['name']);
-            $data['user_details']['user_image'] = UploadHelper::upload('user_image', $data['user_details']['user_image'], $titleShort . '-' . time(), 'storage/images/user-images');
+            $titleShort = strtolower(str_replace(' ', '', $data['name']));
+            $data['user_details']['user_image'] = UploadHelper::upload('user_image', $request['user_image'], $titleShort, 'storage/images/user-images');
             $user = User::create($data);
             $data['user_details']['user_id'] = $user->id;
             $user_details = UserDetail::create($data['user_details']);
@@ -90,33 +89,18 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = $request->all();
+        $data = json_decode($request['user'], true);
         $user = User::find($id);
         $user_details = UserDetail::find($data['user_details']['id']);
-
         //Image Upload
-        if ($data['user_details']['user_image'] != null && $data['user_details']['user_image'] != '') {
-            $file = $data['user_details']['user_image'];
-            $imageTitle = Hash::make($user['name']);
-            $target_directory = 'storage/user-images';
-            //delete the old file
-            $target_location = $target_directory . '/';
-            $old_location = $user['user_details']['user_image'];
-
-            if (File::exists($target_location . $old_location)) {
-                File::delete($target_location . $old_location);
-            }
-
-            $filename = $imageTitle . '.' . $file->getClientOriginalExtension();
-            $file->move($target_location, $filename);
-            $data['user_details']['user_image'] = $filename;
+        if ($request['user_image'] != null && $request['user_image'] != '') {
+            $titleShort = strtolower(str_replace(' ', '', $data['name']));
+            $data['user_details']['user_image'] = UploadHelper::update('user_image', $request['user_image'], $titleShort, 'storage/images/user-images', $user_details['user_image']);
         } else {
-            $data['user_details']['user_image'] = $user['user_details']['user_image'] ?? '';
+            $data['user_details']['user_image'] = $data['user_details']['user_image'] ?? '';
         }
-
         $user->update($data);
         $user_details->update($data['user_details']);
-
         $user = User::with('user_details', 'user_details.account_type', 'user_details.address_municipality', 'user_details.address_district', 'user_details.address_province', 'user_details.address_country')->find($id);
         return response()->json(['type' => 'success', 'message' => 'User detail updated successfully.', 'errors' => null, 'data' => $user]);
     }

@@ -71,6 +71,8 @@ Route::middleware('auth:api')->delete('oauth/tokens/{token_id}', [AuthorizedAcce
 //Sync Resources
 Route::middleware('auth:api')->get('sync-resources', [ResourceController::class, 'syncResources']);
 
+Route::get('get-item-categories', [ResourceController::class, 'getItemCategories']);
+
 //Route::get('/authorize', function () {
 //    return view('vendor.passport.authorize');
 //});
