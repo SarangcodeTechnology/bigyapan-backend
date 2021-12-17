@@ -21,7 +21,7 @@ class ItemController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['index', 'show']]);
+        $this->middleware('auth:api', ['except' => ['index', 'show', 'filterItems']]);
     }
 
     /**
@@ -144,5 +144,23 @@ class ItemController extends Controller
         $item->delete($item);
         return response()->json(['type' => 'success', 'message' => 'Item deleted successfully.', 'errors' => null, 'data' => null]);
 
+    }
+
+    public function filterItems(Request $request)
+    {
+        $itemCategory = $request['itemCategory'];
+        $itemSubCategory = $request['itemSubCategory'];
+        if (!$request['itemSubCategory']) {
+            $items = Item::with('user', 'item_category', 'item_sub_category', 'item_images')->where('item_category_id', $itemCategory)->get();
+
+//            $items = Item::with('user', 'item_category', 'item_sub_category', 'item_images')->get();
+//            $items = CollectionHelper::paginate($items->filter(function ($item) use ($itemCategory) {
+//                return false !== stripos($item, $itemCategory);
+//            })->sortBy($request['sortBy'], 0, $request['sortDesc']), $request['perPage']);
+        } else {
+            return $items = Item::with('user', 'item_category', 'item_sub_category', 'item_images')->where('item_category_id', $itemCategory)->where('item_sub_category_id', $itemSubCategory)->get();
+
+        }
+        return response()->json(['type' => 'success', 'message' => 'Items fetched successfully.', 'errors' => null, 'data' => $items]);
     }
 }
