@@ -45,7 +45,7 @@ Route::middleware('auth:api')->apiResource('account-types', AccountTypeControlle
 Route::apiResource('item-categories', ItemCategoryController::class);
 Route::apiResource('item-sub-categories', ItemSubCategoryController::class);
 Route::apiResource('items', ItemController::class);
-Route::post('filter-items', [ItemController::class, 'filterItems']);
+Route::get('filter-items', [ItemController::class, 'filterItems']);
 
 //Laravel Passport Routes
 Route::middleware('auth:api')->get('oauth/authorize', [AuthorizationController::class, 'authorize']);

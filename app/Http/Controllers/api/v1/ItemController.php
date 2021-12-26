@@ -152,7 +152,7 @@ class ItemController extends Controller
         $itemSubCategory = $request['itemSubCategory'];
         if (!$request['itemSubCategory']) {
             $items = Item::with('user', 'item_category', 'item_sub_category', 'item_images')->where('item_category_id', $itemCategory)->get();
-
+            $items = CollectionHelper::paginate($items->values(), 10);
 //            $items = Item::with('user', 'item_category', 'item_sub_category', 'item_images')->get();
 //            $items = CollectionHelper::paginate($items->filter(function ($item) use ($itemCategory) {
 //                return false !== stripos($item, $itemCategory);
