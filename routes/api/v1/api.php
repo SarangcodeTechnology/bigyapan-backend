@@ -40,7 +40,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::middleware('auth:api')->post('logout', [AuthController::class, 'logout']);
 
 //Users CRUD Routes
-Route::middleware('auth:api')->apiResource('users', UserController::class);
+Route::apiResource('users', UserController::class);
 Route::middleware('auth:api')->apiResource('account-types', AccountTypeController::class);
 Route::apiResource('item-categories', ItemCategoryController::class);
 Route::apiResource('item-sub-categories', ItemSubCategoryController::class);
